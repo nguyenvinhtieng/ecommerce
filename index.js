@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express');
 const app = express()
 const cors = require('cors')
@@ -14,12 +13,12 @@ app.use(cookieParser({ secret: credentials.COOKIE_SECRET }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 route(app)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/build')))
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', "build", "index.html"))
-    })
-}
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(path.join(__dirname, 'client/build')))
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join(__dirname, 'client', "build", "index.html"))
+//     })
+// }
 app.listen(PORT, () => {
     console.log(`listening at http://localhost:${PORT}`)
 })
