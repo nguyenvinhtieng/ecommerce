@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const credentials = require("../credentials")
 class AuthController {
 
     // POST /register
@@ -22,7 +23,7 @@ class AuthController {
         try {
             const { token } = req.body
             if (!token) return res.status(400).json({ success: false, message: "Missing token" })
-            let user = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+            let user = await jwt.verify(token, credentials.ACCESS_TOKEN_SECRET)
             const accessToken = createAccessToken({ id: user.id })
             return res.status(200).json({ success: true, accessToken: accessToken })
         } catch (error) {
@@ -48,7 +49,7 @@ class AuthController {
 
     async logout(req, res) {
         try {
-            res.clearCookie(process.env.REFERESH_TOKEN_NAME, { path: '/referesh-token' })
+            res.clearCookie(credentials.REFERESH_TOKEN_NAME, { path: '/referesh-token' })
             res.json({ success: true, message: "Logout" })
         } catch (error) {
             return res.status(500).json({ success: false, message: "Error: " + error.message })
@@ -56,10 +57,10 @@ class AuthController {
     }
 }
 function createAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+    return jwt.sign(user, credentials.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 }
 
 function createRefereshToken(user) {
-    return jwt.sign(user, process.env.REFERESH_TOKEN_SECRET, { expiresIn: '7d' })
+    return jwt.sign(user, credentials.REFERESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 module.exports = new AuthController();

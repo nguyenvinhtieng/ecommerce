@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const CONNECTION_STRING = "mongodb+srv://vinhtieng:vinhtieng@cluster0.ugswm.mongodb.net/ecommerce?retryWrites=true&w=majority"
-mongoose.connect(CONNECTION_STRING, {
+const credentials = require('../credentials')
+mongoose.connect(credentials.CONNECTION_STRING, {
     useNewUrlParser: true
 }, (err) => {
     if (!err) {
